@@ -3,16 +3,16 @@ import 'package:flutter_firebase/services/auth.dart';
 import 'package:flutter_firebase/shared/contants.dart';
 import 'package:flutter_firebase/shared/loading.dart';
 
-class SignIn extends StatefulWidget {
+class Register extends StatefulWidget {
 
   final Function toggleView;
-  SignIn({ this.toggleView });
+  Register({ this.toggleView });
 
   @override
-  _SignInState createState() => _SignInState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignInState extends State<SignIn> {
+class _RegisterState extends State<Register> {
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
@@ -32,14 +32,14 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0,
-        title: Text('Sign In to Awesome App'),
+        title: Text('Sign Up to Awesome App'),
         actions: [
           FlatButton.icon(
               onPressed: () {
                 widget.toggleView();
               },
               icon: Icon(Icons.person, color: Colors.white),
-              label: Text('Register', style: TextStyle(color: Colors.white))
+              label: Text('Sign In', style: TextStyle(color: Colors.white))
           ),
         ],
       ),
@@ -61,7 +61,7 @@ class _SignInState extends State<SignIn> {
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'Password'),
                 obscureText: true,
-                validator: (val) => val.length < 6 ? 'Password cannot be shorter 6 chars' : null,
+                validator: (val) => val.length < 6 ? 'Use 8 characters or more for a password' : null,
                 onChanged: (val) {
                   setState(() => password = val);
                 },
@@ -70,19 +70,17 @@ class _SignInState extends State<SignIn> {
               RaisedButton(
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    setState(() => loading = true);
-                    dynamic res = await _auth.signInWithEmailPassword(email, password);
+                    setState(() => true);
+                    dynamic res = await _auth.registerWithEmailPassword(email, password);
                     if (res == null) {
-                      setState(() {
-                        error = 'Could not sign in with those credentials';
-                        loading = false;
-                      });
+                      setState(() => error = 'Please enter a valid email');
+                      loading = false;
                     }
                   }
                 },
                 color: Colors.pink[400],
                 child: Text(
-                  'Sign In',
+                  'Register',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

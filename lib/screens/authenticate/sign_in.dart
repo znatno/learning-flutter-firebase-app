@@ -71,7 +71,10 @@ class _SignInState extends State<SignIn> {
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     setState(() => loading = true);
+
+                    // W/System  (18638): Ignoring header X-Firebase-Locale because its value was null.
                     dynamic res = await _auth.signInWithEmailPassword(email, password);
+
                     if (res == null) {
                       setState(() {
                         error = 'Could not sign in with those credentials';
